@@ -16,8 +16,8 @@ classdef SpectralClustering < model.clustering.KmeansClustering
 
 			[l, d, s] = obj.buildLaplacian();
 
-			[v, something] = eigs(l, d, obj.k, 'LM');
-
+			[v, dummy] = eigs(l);
+			
 			u = zeros(m, obj.k);
 
 			for i=1:obj.k
@@ -26,7 +26,9 @@ classdef SpectralClustering < model.clustering.KmeansClustering
 			
 			obj.X = u;
 
-			obj.KmeansCluster();
+			obj.indicators = model.clustering.AnotherKMeansClustering.cluster(obj.X, obj.k);
+
+			
 
 		end
 
@@ -75,14 +77,24 @@ classdef SpectralClustering < model.clustering.KmeansClustering
 			[m, n] = size(obj.X);
 			s = zeros(m, m);
 
-			distMat = squareform(pdist(obj.X));
+			distMat = squareform(pdist(obj.X))+10^-20;
+			distMat = 1.0./distMat;
 
 			s(distMat < e) = distMat(distMat < e);
 
 		end
 
 		function s = buildGaussianLaplacian(obj)
+			sigma = obj.cfg('sigma');
+			[m, n] = size(obj.X);
+			s = zeros(m, m);
 
+			distMat = squareform(pdist(obj.X));
+			distMat = -1*distMat.^2;
+			distMat = distMat./(sigma^2);
+			distMat = exp(distMat);
+
+			s = distMat;
 		end
 
 	end

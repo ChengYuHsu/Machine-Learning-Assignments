@@ -5,7 +5,7 @@ clear;
 
 data = importdata('./data/data.txt');
 
- indicators = SpectralClustering.cluster(data, 2, containers.Map({'similarity', 'e'}, {'eBall', 1.2}));
+ indicators = SpectralClustering.cluster(data, 2, containers.Map({'similarity', 'e', 'sigma'}, {'eBall', 1.2, 0.22}));
 
 %indicators = KmeansClustering.cluster(data, 2);
 
