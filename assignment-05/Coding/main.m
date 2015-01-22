@@ -5,8 +5,16 @@ clear;
 
 data = importdata('./data/data.txt');
 
- indicators = SpectralClustering.cluster(data, 2, containers.Map({'similarity', 'e', 'sigma'}, {'eBall', 1.2, 0.22}));
+% epsilon nearest neighbor
+%indicators = SpectralClustering.cluster(data, 2, containers.Map({'similarity', 'e'}, {'eNN', 5}));
 
+% epsilon ball
+indicators = SpectralClustering.cluster(data, 2, containers.Map({'similarity', 'e'}, {'eBall', 1.3}));
+
+% gaussian
+%indicators = SpectralClustering.cluster(data, 2, containers.Map({'similarity', 'sigma'}, {'Gaussian', 0.5}));
+
+% k means
 %indicators = KmeansClustering.cluster(data, 2);
 
 
