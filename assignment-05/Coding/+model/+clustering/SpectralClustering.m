@@ -1,9 +1,5 @@
 classdef SpectralClustering < model.clustering.KmeansClustering
 	
-	properties(Constant)
-		MICRO_VALUE = 10^-6;
-	end
-
 	properties
 		cfg
 	end
@@ -77,9 +73,9 @@ classdef SpectralClustering < model.clustering.KmeansClustering
 
 						dist = pdist2(obj.X(i,:), obj.X(idx(j),:));
 
-						s(i, idx(j)) = 1/(dist + obj.MICRO_VALUE);
+						s(i, idx(j)) = 1/dist;
 
-						s(idx(j), i) = 1/(dist + obj.MICRO_VALUE);
+						s(idx(j), i) = 1/dist;
 
 					end
 
