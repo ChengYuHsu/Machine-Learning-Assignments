@@ -4,6 +4,20 @@ classdef SpectralClustering < model.clustering.KmeansClustering
 		cfg
 	end
 
+	methods (Static)
+
+		function clusterIndicators = cluster(X, k, cfg)
+
+        	obj = model.clustering.SpectralClustering(X, k, cfg);
+
+        	obj.spectralCluster();
+
+        	clusterIndicators = obj.indicators;
+
+      	end	
+
+   end
+
 	methods
 		function objInstance = SpectralClustering(X, k, cfg)
 			objInstance@model.clustering.KmeansClustering(X, k);
@@ -94,9 +108,11 @@ classdef SpectralClustering < model.clustering.KmeansClustering
 			s = zeros(m, m);
 
 			distMat = squareform(pdist(obj.X));
-		
-			s(distMat < e) = distMat(distMat < e);
+			
 
+			s(distMat < e) = distMat(distMat < e);
+			
+			s(s ~= 0) = 1 ./ s(s ~= 0);
 			
 		end
 
@@ -116,18 +132,6 @@ classdef SpectralClustering < model.clustering.KmeansClustering
 
 	end
 
-	methods (Static)
-
-		function clusterIndicators = cluster(X, k, cfg)
-
-        	obj = model.clustering.SpectralClustering(X, k, cfg);
-
-        	obj.spectralCluster();
-
-        	clusterIndicators = obj.indicators;
-
-      	end	
-
-   end
+	
 
 end
