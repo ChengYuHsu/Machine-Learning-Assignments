@@ -1,46 +1,28 @@
-import model.classify.SoftMarginClassifier;
-import model.classify.KernelClassifier;
-import model.classify.LaplacianSupportVectorMachine;
-
 clear;
+
+import model.classify.FinalClassifier;
 
 load('data/X.mat');
 load('data/y.mat');
 load('data/Xtest.mat');
 load('data/ytest.mat');
+load('data/X_finalds.mat');
+load('data/y_finalds.mat');
 
 
-X = zscore(X);
-pcaval = pca(X);
-X = X * pcaval;
-%X = X*pca(X);
+classifier = FinalClassifier.train(X, y);
+labels = classifier.predict(Xtest);
+
+acc = 1-nnz(labels - ytest)/length(ytest);
 
 
+acc
 
-Xtest = zscore(Xtest);
-Xtest = Xtest*pcaval;
-%Xtest = Xtest*pca(Xtest);
+labels = classifier.predict(X_finalds);
+
+acc = 1-nnz(labels - y_finalds)/length(y_finalds);
+
+acc
 
 
-
-%[Xtest, ~] = compute_mapping(Xtest, 'LDA');
-
-sv = LaplacianSupportVectorMachine.train(X, y);
-out = sv.predict(X);
-
-%svm = svmtrain(out, X, '-t 0');
-
-%svm = SoftMarginClassifier.train(X*k, out);
-
-%lbl = svm.predict(Xtest*k2);
-%1-(nnz(lbl - ytest)/length(ytest))
-
-sv = KernelClassifier.train(X, out);
-%out = sv.predict(X);
-
-%sv2 = KernelClassifier.train(X, out);
-
-lbl = sv.predict(Xtest);
-
-1-(nnz(lbl - ytest) / length(ytest))
 

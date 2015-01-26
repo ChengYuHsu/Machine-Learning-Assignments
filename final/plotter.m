@@ -2,9 +2,10 @@ dim1 = 1;
 dim2 = 2;
 dim3 = 3;
 
-scatter(X(out==1,dim1), X(out==1,dim2), 'r');
+scatter(dat(out==1,:), zeros(length(dat(out==1,:)), 1), 'r');
 hold on;
-scatter(X(out==-1,dim1), X(out==-1,dim2), 'b');
+scatter(dat(out==-1,:), ones(length(dat(out==-1,:)), 1), 'b');
+hold off;
 
 
 
