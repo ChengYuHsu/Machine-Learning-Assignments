@@ -1,6 +1,6 @@
 clear;
 
-import model.classify.FinalClassifier;
+import model.classify.MLFinalClassifier;
 
 load('data/X.mat');
 load('data/y.mat');
@@ -10,7 +10,7 @@ load('data/X_finalds.mat');
 load('data/y_finalds.mat');
 
 
-classifier = FinalClassifier.train(X, y);
+classifier = MLFinalClassifier.train(X, y);
 labels = classifier.predict(Xtest);
 
 acc = 1-nnz(labels - ytest)/length(ytest);

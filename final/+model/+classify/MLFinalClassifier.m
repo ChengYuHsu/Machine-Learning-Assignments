@@ -1,4 +1,4 @@
-classdef FinalClassifier < handle
+classdef MLFinalClassifier < handle
     properties
         X
         y
@@ -9,12 +9,12 @@ classdef FinalClassifier < handle
     
     methods
         
-        function finalClassifier = FinalClassifier(X, y, w_lda, lapSVM, svm)
-            finalClassifier.X = X;
-            finalClassifier.y = y;
-            finalClassifier.w_lda = w_lda;
-            finalClassifier.lapSVM = lapSVM;
-            finalClassifier.svm = svm;
+        function mlFinalClassifier = MLFinalClassifier(X, y, w_lda, lapSVM, svm)
+            mlFinalClassifier.X = X;
+            mlFinalClassifier.y = y;
+            mlFinalClassifier.w_lda = w_lda;
+            mlFinalClassifier.lapSVM = lapSVM;
+            mlFinalClassifier.svm = svm;
         end
 
         function predictedLabels = predict (obj, data)
@@ -28,7 +28,7 @@ classdef FinalClassifier < handle
 
     methods (Static)
 
-        function finalClassifier = train (X, y)
+        function mlFinalClassifier = train (X, y)
 
             % normalize data
             X = zscore(X);
@@ -84,7 +84,7 @@ classdef FinalClassifier < handle
 
             
 
-            finalClassifier = model.classify.FinalClassifier(X, y, coeffs, lap_SVM, n_svm);
+            mlFinalClassifier = model.classify.MLFinalClassifier(X, y, coeffs, lap_SVM, n_svm);
         end
 
     end
