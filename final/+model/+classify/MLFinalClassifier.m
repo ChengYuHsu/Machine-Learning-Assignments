@@ -34,12 +34,12 @@ classdef MLFinalClassifier < handle
             X = zscore(X);
 
             % propagate labels
-            lapopt.gamma = 19;
+            lapopt.gamma = 18;
             lapopt.lambda = 1.3;
             lapopt.miu = 1.4;
 
             lap_SVM = model.classify.LaplacianSupportVectorMachine.train(X, y, lapopt);
-            propagated = lap_SVM.predict(X);
+            propagated = lap_SVM.predict(X);            
 
             % perform dimension reduction
             [~, coeffs] = model.dimension.LDA.project(X, propagated);
@@ -47,22 +47,21 @@ classdef MLFinalClassifier < handle
             % filter out insignificant factors
             threshold = 0.4;
             coeffs = ge(coeffs, threshold) .* coeffs + le(coeffs, -1*threshold) .* coeffs;
-            
-            
+                        
             % reduce to 2D
             [n, d] = size(X);
             X = X * coeffs(:,1:d)';
 
             % train a support vector machine
             svmopt.gamma = 20;
-            svmopt.lambda = 1.31;
+            svmopt.lambda = 1.3;
             svmopt.miu = 0;
 
             % 8-fold cross validation
             folds = 8;
             idx = crossvalind('Kfold', propagated, folds);
             err = 0;
-            min_arr = inf;
+            min_err = inf;
 
             for i=1:folds
                 test = (idx == i);
@@ -73,18 +72,15 @@ classdef MLFinalClassifier < handle
 
                 testing_err = (nnz(propagated(test) - labels) / length(propagated(test)));
                 
-                if testing_err < min_arr
+                if testing_err < min_err
                     n_svm = candidate_svm;
-                    min_arr = testing_err;
+                    min_err = testing_err;
                 end
 
             end
 
-            
-
-            
-
             mlFinalClassifier = model.classify.MLFinalClassifier(X, y, coeffs, lap_SVM, n_svm);
+            
         end
 
     end
